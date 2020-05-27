@@ -1,8 +1,12 @@
-@import url('../assets/iconfont/iconfont.css');
+@import url("../assets/iconfont/iconfont.css");
 
+page {
+  background-color: #f4f4f4;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
 .page {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    min-height: 100vh;
-    background-color: #f4f4f4;
-    overflow: hidden;
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  overflow: hidden;
 }

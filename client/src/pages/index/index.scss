@@ -59,7 +59,6 @@
     background-color: #f4f4f4;
     width: 100vw;
     height: 100vh;
-    background-color: white;
     box-shadow: 0 0 0 #666;
     position: absolute;
     top: 0;
@@ -69,7 +68,7 @@
     transition: all 0.3s;
     border-radius: 0 0 40px 40px;
     &.shadow {
-      box-shadow: 0 0 100vh #222;
+      box-shadow: 0 20px 20px #ccc;
     }
     .list-box {
       margin: 40px;
