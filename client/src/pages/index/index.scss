@@ -1,0 +1,131 @@
+.page {
+  color: #222;
+  box-sizing: border-box;
+
+  .nowDate-box{
+    display: flex;
+    justify-content: space-between;
+    font-size: xx-large;
+    padding: 40px 40px;
+    color: #666;
+    .left{
+      display: flex;
+      View{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        font-size: x-small;
+        color: #999;
+        padding-left: 10px;
+      }
+    }
+  }
+
+  .list-box {
+    margin: 40px;
+    padding: 60px 30px 30px;
+    border-radius: 20px;
+    box-shadow: 1px 1px 20px #ccc;
+    background-color: #fff;
+    position: relative;
+    .list-box-title {
+      display: inline-block;
+      position: absolute;
+      transform: translate(5px, calc(-50px - 50%));
+      background-color: orange;
+      padding: 5px 25px;
+      border-radius: 10px;
+      color: white;
+    }
+    .list-item {
+      padding: 10px 15px;
+      font-size: smaller;
+      Text {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+      }
+      &.done {
+        color: #ccc;
+        text-decoration: line-through;
+      }
+    }
+  }
+
+  .add-box {
+    background-color: #f4f4f4;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    box-shadow: 0 0 0 #666;
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -100%);
+    transform: translateZ(0);
+    z-index: 1;
+    transition: all 0.3s;
+    border-radius: 0 0 40px 40px;
+    &.shadow {
+      box-shadow: 0 0 100vh #222;
+    }
+    .list-box {
+      margin: 40px;
+      padding: 60px 30px 30px;
+      border-radius: 20px;
+      box-shadow: 1px 1px 20px #ccc;
+      background-color: #fff;
+      position: relative;
+      font-size: smaller;
+      .list-box-title {
+        display: inline-block;
+        position: absolute;
+        transform: translate(5px, calc(-50px - 50%));
+        background-color: orange;
+        padding: 5px 25px;
+        border-radius: 10px;
+        color: white;
+      }
+      .input-box {
+        width: 100%;
+        box-sizing: border-box;
+        .input {
+          margin: 0 5px;
+          border-bottom: 1px solid orange;
+          caret-color: orange; /*光标颜色*/
+        }
+      }
+      .list-box-contnet {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 30px 5px 0;
+        .date{
+          border: 2px solid orange;
+          border-radius: 10px;
+          color: orange;
+          padding: 10px 30px;
+          margin: 0 5px;
+          &.active{
+            background-color: orange;
+            color: white;
+          }
+        }
+        .icon{
+          font-size: large;
+          color: #999;
+        }
+      }
+    }
+    .bottom {
+      // position: relative;
+      font-size: xx-large;
+      color: orange;
+      // transform: translateX(calc(50vw - 50%));
+      padding-top: 20px;
+      text-align: center;
+    }
+  }
+}

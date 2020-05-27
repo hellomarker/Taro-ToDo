@@ -1,0 +1,30 @@
+@font-face {
+  font-family: "iconfont";
+  /* src: url('./iconfont.eot?t=1590485491176'); IE9 */
+  src: url("data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAOMAAsAAAAAB1wAAAM/AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDBgqCQIIkATYCJAMMCwgABCAFhG0HOhtuBsg+QCa3uoOoGZ0TseVmbOFShdc27xyb+CwwEVBjbU9eMWlqke7Nk2hiSESmM10zoVICXmk+3Uv4ee3qs2/2zCrVUU5mZ0c4q7tvV4Q6A6J2tNc3k1hAQZzgJ2GQYGFh+aEjqJObf6dL4tcskISyQqsBAoTGNsSMECQ9mRJeUhSkgIcC64I6+faJe6d/ngc2n2W5rG1jj/NPXYDx1kD3wDZQoAUSkDeMXXkRpwmo6hZAt5BVUAHMZcakgHBEka3APBWWZZYrC4olKzPhklWON16CC//74V/KHFEhYcxcO8zsAClfeLOLGKoNgeESVOM5wdaRMAnIhP1S9yYiTE8iVBWjvr60KAviWLH///GVqrm40j9eJBQxquvBKMxEvmBLCHzpKhEkUHQb/XuA0xHuTJTqXXSw7r1V5XbXu9vvzKoKriR9e4/cKjhwZ+ZWzJU7+dBL6S3Zzs4pi1fs3+vm7crZu/GpC3YfXOXZTcrwOrjPnN2yfL2l5bvS6c71hi2Azddsd9lvR73lgRj60EOoB7z7vVAb75hywfb8X8xirx/aD5/p/F1d1hu+1ThTxzj2uLlnFNamLdkS++uUvPVldYgRRN/zvOnW4+kzQ+x0yqLqQvcMd8fuzCbLBmzlK9sbP1KrO7hokzFHnHjS89OC+1OfmItQt4DL3PEEALXr6VwK/BW/8fyi2S6/lmGAz7s/pjakB+kEyifqCbx4Vcu6rGoMS8qy0lbq3mTxJpwRKOc+NWD4Wz3pb+5oXU1Q1hEjKulCUjZIZnYSBXWmUFQ2jaoJ2evrtJEQQvYwbhwgaLYVUaMbJM0uk5l9jIJOb1HUHIGq9aAd6wxHWZaEWhXUAdu6IdXOc9iyKZZBbRkiVaZVSmp8fhWSZCoGQ4NCsrlsxCFpjDmyRoYpCoZY4lmYBc5DDMNDQeKNqF0JMiiKEBccjMteFNTOs8DSPAnSSoF0gNp0gyjteBzsNldY5j5fBiGpGK2kGk5FugoikVGDQ6GChLQgs41cK861XCLTkMIoFBiESXgsKAs4EcZM8yChfJgR0k4RxNAjKYgTjBrhtsag+c3s822BKuPwFJRoMeQDlQq1CJQNVI+B50gAAAA=")
+    format("woff2");
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "iconfont" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: inherit;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-shizhong:before {
+  content: "\e6b4";
+}
+
+.icon-dui:before {
+  content: "\e614";
+}
