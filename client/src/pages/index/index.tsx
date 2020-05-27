@@ -71,17 +71,18 @@ export default class Index extends Component<any, any> {
       "十一",
       "十二"
     ];
+    const reg = /.*(?=\d\d)/;
     return (
       <View className="nowDate-box">
         <View className="left">
-          <Text>{nowDate.getDate()}</Text>
+          <Text>{("0" + nowDate.getDate()).replace(reg, "")}</Text>
           <View>
             <Text>{monthZH[nowDate.getMonth()]}月</Text>
-            <Text>{nowDate.getFullYear()}</Text>
+            <Text>{("0" + nowDate.getFullYear()).replace(reg, "")}</Text>
           </View>
         </View>
         <Text>
-          {nowDate.getHours()}:{nowDate.getMinutes()}:{nowDate.getSeconds()}
+          {("0" + nowDate.getHours()).replace(reg, "")}:{("0" + nowDate.getMinutes()).replace(reg, "")}:{("0" + nowDate.getSeconds()).replace(reg, "")}
         </Text>
       </View>
     );
