@@ -3,6 +3,7 @@ import { View, Text, Input } from "@tarojs/components";
 import "./index.scss";
 
 import { matchDate } from "./matchDate";
+import Login from '../../components/login/index.weapp'
 
 /**
  * 触摸立刻获取的y轴高度，用于对比
@@ -30,19 +31,18 @@ export default class Index extends Component<any, any> {
       }
     });
     setInterval(() => {
-      this.setState({
-        touchY: this.state.touchY
-      });
+      this.setState({});
     }, 1000);
+
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -171,23 +171,54 @@ export default class Index extends Component<any, any> {
   inputSubmit() {
     const { todoList, toDoObj } = this.state;
     if (toDoObj.inputValue.length == 0) return;
+
+    // 消息订阅申请
+    Taro.getSetting({
+      withSubscriptions: true,
+      success: (set_res) => {
+        if (!set_res.subscriptionsSetting.mainSwitch)
+          Taro.requestSubscribeMessage({
+            tmplIds: ['i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0'],
+            success: (mes_res) => { console.log(mes_res) },
+            fail: () => { },
+            complete: () => { },
+          })
+      },
+    })
+    // 发送消息
+    !toDoObj.nodate && Taro.cloud
+      .callFunction({
+        name: "sendMessage",
+        data: {
+          date: toDoObj.date,
+          content: toDoObj.inputValue
+        }
+      })
+      .then(res => {
+        console.log(res)
+      })
+
     const newList = [
       ...todoList,
       {
         yindex: todoList.length ? todoList[todoList.length - 1].yindex + 1 : 0,
-        content: toDoObj.inputValue
-        // date: toDoObj.nodate && toDoObj.date
+        content: toDoObj.inputValue,
+        date: !toDoObj.nodate && toDoObj.date
       }
     ];
     this.setState({
       todoList: newList,
-      inputValue: "",
+      toDoObj: {
+        inputValue: '',
+        date: undefined
+      },
       isShwoAddBox: false
     });
     Taro.setStorage({
       key: "todoList",
       data: newList
     });
+
   }
   checkDate() {
     const { toDoObj } = this.state;
@@ -207,20 +238,18 @@ export default class Index extends Component<any, any> {
           <Text className="list-box-title">Add To-do</Text>
           {this.renderInput()}
           <View className="list-box-contnet">
-            {toDoObj.date && (
+            {toDoObj.date ? (
               <Text
                 className={`date ${toDoObj.nodate ? "" : "active"}`}
                 onClick={this.checkDate}
               >
                 {toDoObj.date}
               </Text>
-            )}
-            {toDoObj.date && !toDoObj.nodate && (
-              <Text className="icon icon-shizhong"></Text>
-            )}
+            ) : <Text></Text>}
+            {toDoObj.date && !toDoObj.nodate ? <Text className="icon icon-alarm"></Text> : <Text className="icon icon-add-alarm"></Text>}
           </View>
           {/* <View className="list-box-content">
-            <Text></Text>
+            <Text></Text>F
             <Text className="icon-shizhong"></Text>
           </View> */}
         </View>
@@ -271,6 +300,7 @@ export default class Index extends Component<any, any> {
         {this.renderTODO()}
         {this.renderAddTODO()}
         {/* {this.renderSetting()} */}
+        <Login></Login>
       </View>
     );
   }

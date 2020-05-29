@@ -6,15 +6,15 @@ export default class Login extends Component {
     context: {}
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
-  componentWillUnmount() {}
+  componentWillUnmount() { }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
   getLogin = () => {
     Taro.cloud
@@ -28,6 +28,7 @@ export default class Login extends Component {
           context: res.result
         })
       })
+
   }
 
   render() {

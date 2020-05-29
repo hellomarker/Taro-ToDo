@@ -22,14 +22,11 @@ class App extends Component {
     window: {
       backgroundTextStyle: "light",
       navigationBarBackgroundColor: "#f4f4f4",
-      backgroundColor:'#f4f4f4',
+      backgroundColor: '#f4f4f4',
       navigationBarTitleText: "WeChat",
       navigationBarTextStyle: "black"
     },
     cloud: true,
-    // 默认背景是浅灰色，本来想禁止IOS上下拉出现的丑陋白块，但下面两行代码在我的iphone6没有效果
-    // disableScroll: true,
-    // enablePullDownRefresh: false
   };
 
   componentDidMount() {
@@ -38,11 +35,11 @@ class App extends Component {
     }
   }
 
-  componentDidShow() {}
+  componentDidShow() { }
 
-  componentDidHide() {}
+  componentDidHide() { }
 
-  componentDidCatchError() {}
+  componentDidCatchError() { }
 
   // 在 App 类中的 render() 函数没有实际作用
   // 请勿修改此函数

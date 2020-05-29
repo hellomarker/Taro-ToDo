@@ -1,9 +1,59 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // 配置默认终端为 git-bash
+  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "minapp-vscode.disableAutoConfig": true,
+  // 拆分json编辑器
+  "workbench.settings.useSplitJSON": true,
+  // 重新设定tabsize
+  "editor.tabSize": 2,
+  // #每次保存的时候自动格式化
+  "editor.formatOnSave": true,
+  // 显示右侧代码缩略图
+  "editor.minimap.enabled": true,
+  // 保存时按照 eslint 规矩
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  // 用配置文件的来格式化
+  "editor.defaultFormatter": "null",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  // 不再提醒垃圾桶
+  "explorer.confirmDelete": false,
+
   "eslint.alwaysShowStatus": true,
   "eslint.enable": true,
   "eslint.run": "onType",
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+  "eslint.options": {
+    "extensions": [".js", ".vue"]
+  },
+
+  //  #让prettier使用eslint的代码格式进行校验
+  "prettier.eslintIntegration": true,
+  //  #去掉代码结尾的分号
+  "prettier.semi": false,
+  //  #使用单引号替代双引号
+  "prettier.singleQuote": true,
+
+  // 文件移动后 始终自动更新引入路径
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  // #让函数(名)和后面的括号之间加个空格
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  // 关联
+  "files.associations": {
+    "*.cjson": "jsonc",
+    "*.wxss": "css",
+    "*.wxs": "javascript"
+  },
+  // 为了兼容做的映射
+  "emmet.includeLanguages": {
+    "wxml": "html"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }
