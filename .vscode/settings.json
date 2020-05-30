@@ -1,6 +1,6 @@
 {
   // 配置默认终端为 git-bash
-  "terminal.integrated.shell.windows": "C:\\Program Files\\Git\\bin\\bash.exe",
+  "terminal.integrated.shell.windows": "D:\\Git\\bin\\bash.exe",
   "minapp-vscode.disableAutoConfig": true,
   // 拆分json编辑器
   "workbench.settings.useSplitJSON": true,
@@ -21,21 +21,21 @@
   },
   // 不再提醒垃圾桶
   "explorer.confirmDelete": false,
-
   "eslint.alwaysShowStatus": true,
   "eslint.enable": true,
   "eslint.run": "onType",
   "eslint.options": {
-    "extensions": [".js", ".vue"]
+    "extensions": [
+      ".js",
+      ".vue"
+    ]
   },
-
   //  #让prettier使用eslint的代码格式进行校验
   "prettier.eslintIntegration": true,
   //  #去掉代码结尾的分号
   "prettier.semi": false,
   //  #使用单引号替代双引号
   "prettier.singleQuote": true,
-
   // 文件移动后 始终自动更新引入路径
   "javascript.updateImportsOnFileMove.enabled": "always",
   // #让函数(名)和后面的括号之间加个空格

@@ -10,3 +10,17 @@ page {
   min-height: 100vh;
   overflow: hidden;
 }
+
+[class^="icon"],
+[class*=" icon"] {
+  font-family: "iconfont" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: inherit;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

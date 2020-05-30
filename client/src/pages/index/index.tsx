@@ -1,8 +1,8 @@
 import Taro, { Component, Config } from "@tarojs/taro";
-import { View, Text, Input } from "@tarojs/components";
+import { View, Text, Input, Radio } from "@tarojs/components";
 import "./index.scss";
 
-import { matchDate } from "./matchDate";
+import { matchDate } from "../../common/matchDate";
 import Login from '../../components/login/index.weapp'
 
 /**
@@ -78,7 +78,7 @@ export default class Index extends Component<any, any> {
           <Text>{("0" + nowDate.getDate()).replace(reg, "")}</Text>
           <View>
             <Text>{monthZH[nowDate.getMonth()]}月</Text>
-            <Text>{("0" + nowDate.getFullYear()).replace(reg, "")}</Text>
+            <Text>{nowDate.getFullYear()}</Text>
           </View>
         </View>
         <Text>
@@ -116,14 +116,18 @@ export default class Index extends Component<any, any> {
               key={e.yindex}
               className={`list-item ${e.done ? "done" : ""}`}
             >
-              {/* ckeckbox */}
               {/* 文本 */}
-              <Text onClick={() => this.onDone(e.yindex)}>{e.content}</Text>
+              <Text className='list-item-text' onClick={() => this.onDone(e.yindex)}>{e.content}</Text>
+              {/* ckeckbox */}
+              <View className={`list-item-icon ${e.done ? 'check' : ''}`}>
+                <Text className='icondui'></Text>
+              </View>
               {/* 左右滑动 */}
             </View>
           );
-        })}
-      </View>
+        })
+        }
+      </View >
     );
   }
 
@@ -132,9 +136,10 @@ export default class Index extends Component<any, any> {
    */
   renderTODO() {
     return (
-      <View className="page">
+      <View className="page" >
         {/* 时间 */}
-        {this.renderNowDate()}
+        {this.renderNowDate()
+        }
         {this.renderList()}
       </View>
     );
@@ -246,15 +251,15 @@ export default class Index extends Component<any, any> {
                 {toDoObj.date}
               </Text>
             ) : <Text></Text>}
-            {toDoObj.date && !toDoObj.nodate ? <Text className="icon icon-alarm"></Text> : <Text className="icon icon-add-alarm"></Text>}
+            {toDoObj.date && !toDoObj.nodate ? <Text className="icon iconalarm"></Text> : <Text className="icon iconadd-alarm"></Text>}
           </View>
           {/* <View className="list-box-content">
             <Text></Text>F
-            <Text className="icon-shizhong"></Text>
+            <Text className="iconshizhong"></Text>
           </View> */}
         </View>
         <View className="bottom">
-          <Text className="icon-dui" onClick={this.inputSubmit}></Text>
+          <Text className="icondui" onClick={this.inputSubmit}></Text>
         </View>
       </View>
     );

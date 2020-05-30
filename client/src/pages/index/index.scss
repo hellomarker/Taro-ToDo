@@ -40,17 +40,28 @@
     .list-item {
       padding: 10px 15px;
       font-size: smaller;
-      Text {
+      display: flex;
+      justify-content: space-between;
+      &.done {
+        color: #ccc;
+        .list-item-text{
+          text-decoration: line-through;
+        }
+      }
+      .list-item-text {
         overflow: hidden;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         -ms-text-overflow: ellipsis;
         text-overflow: ellipsis;
+        width: 100%;
       }
-      &.done {
-        color: #ccc;
-        text-decoration: line-through;
+      .list-item-icon{
+        color: white;
+        &.check{
+          color: orange;
+        }
       }
     }
   }
