@@ -2,7 +2,7 @@ import Taro, { Component, Config } from "@tarojs/taro";
 import { View, Text, Input, Radio } from "@tarojs/components";
 import "./index.scss";
 
-import { matchDate } from "../../common/matchDate";
+import { matchDate, dateConvert } from "../../common/matchDate";
 import Login from '../../components/login/index.weapp'
 
 /**
@@ -32,7 +32,7 @@ export default class Index extends Component<any, any> {
     });
     setInterval(() => {
       this.setState({});
-    }, 1000);
+    }, 1000 * 60);
 
   }
 
@@ -82,7 +82,7 @@ export default class Index extends Component<any, any> {
           </View>
         </View>
         <Text>
-          {("0" + nowDate.getHours()).replace(reg, "")}:{("0" + nowDate.getMinutes()).replace(reg, "")}:{("0" + nowDate.getSeconds()).replace(reg, "")}
+          {("0" + nowDate.getHours()).replace(reg, "")}:{("0" + nowDate.getMinutes()).replace(reg, "")}
         </Text>
       </View>
     );
@@ -146,6 +146,9 @@ export default class Index extends Component<any, any> {
   }
 
   onInput(e) {
+    if (e.detail.value == '一点') {
+      let a = matchDate(e.detail.value.trim())
+    }
     this.setState({
       toDoObj: {
         inputValue: e.detail.value.trim(),
@@ -248,7 +251,7 @@ export default class Index extends Component<any, any> {
                 className={`date ${toDoObj.nodate ? "" : "active"}`}
                 onClick={this.checkDate}
               >
-                {toDoObj.date}
+                {dateConvert(toDoObj.date, 'YYYY年MM月DD日 HH时mm分')}
               </Text>
             ) : <Text></Text>}
             {toDoObj.date && !toDoObj.nodate ? <Text className="icon iconalarm"></Text> : <Text className="icon iconadd-alarm"></Text>}
