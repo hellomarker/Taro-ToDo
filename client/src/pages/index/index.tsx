@@ -31,17 +31,32 @@ export default class Index extends Component<any, any> {
       .then(res => {
         this.setState({
           openid: res.result && res.result['OPENID']
-        }, () => {
-          Taro.cloud.database().collection('todos')
-            .where({
-              _openid: this.state.openid,
-            })
-            .get().then(res => {
-              this.setState({
-                todoList: res.data
-              });
-            })
-        })
+        }, () => this.getToDoList())
+      })
+
+    // Taro.vibrateShort({
+    //   success: () => {
+    //     Taro.cloud.database().collection('todos')
+    //       .where({
+    //         _openid: this.state.openid,
+    //         done: true
+    //       })
+    //       .remove()
+    //       .then(() => this.getToDoList())
+    //   }
+    // })
+
+  }
+
+  getToDoList() {
+    Taro.cloud.database().collection('todos')
+      .where({
+        _openid: this.state.openid,
+      })
+      .get().then(res => {
+        this.setState({
+          todoList: res.data
+        });
       })
   }
 
@@ -49,9 +64,32 @@ export default class Index extends Component<any, any> {
 
   componentWillUnmount() { }
 
-  componentDidShow() { }
+  componentDidShow() {
+    Taro.onAccelerometerChange((e) => {
+      if (this.state.isShwoAddBox) return
+      console.log('x', e.x)
+      console.log('y', e.y)
+      console.log('z', e.z)
+      if (e.x > 1 || e.y > 1 || e.z > 1) {
+        Taro.showToast({
+          title: '摇一摇成功',
+          icon: 'success',
+          duration: 2000
+        })
+        Taro.cloud.database().collection('todos')
+          .where({
+            _openid: this.state.openid,
+            done: true
+          })
+          .remove()
+          .then(() => this.getToDoList())
+      }
+    })
+  }
 
-  componentDidHide() { }
+  componentDidHide() {
+    Taro.stopAccelerometer()
+  }
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -97,10 +135,13 @@ export default class Index extends Component<any, any> {
     );
   }
 
-  onDone(current_yindex) {
+  onDone(id) {
     const { todoList } = this.state;
     const newList = todoList.map(e => {
-      if (e.yindex == current_yindex) e.done = !e.done;
+      if (e._id == id) {
+        e.done = !e.done;
+        Taro.cloud.database().collection('todos').doc(id).update({ data: { done: e.done } })
+      }
       return e;
     });
     this.setState({
@@ -122,10 +163,10 @@ export default class Index extends Component<any, any> {
               className={`list-item ${e.done ? "done" : ""}`}
             >
               {/* 文本 */}
-              <Text className='list-item-text' onClick={() => this.onDone(e.yindex)}>{e.inputValue}</Text>
+              <Text className='list-item-text' onClick={() => this.onDone(e._id)}>{e.inputValue}</Text>
               {/* ckeckbox */}
-              <View className={`list-item-icon ${e.done ? 'check' : ''}`}>
-                <Text className='icondui'></Text>
+              <View className={`list-item-icon ${!e.nodate && !e.done ? 'check' : ''}`}>
+                <Text className='iconalarm'></Text>
               </View>
               {/* 左右滑动 */}
             </View>
@@ -155,7 +196,7 @@ export default class Index extends Component<any, any> {
       toDoObj: {
         inputValue: e.detail.value.trim(),
         date: matchDate(e.detail.value.trim()),
-        nodate: false,
+        nodate: !matchDate(e.detail.value.trim()),
         done: false,
       }
     });
@@ -185,7 +226,7 @@ export default class Index extends Component<any, any> {
     if (toDoObj.inputValue.length == 0) return;
 
     // 消息订阅申请
-    Taro.requestSubscribeMessage({
+    toDoObj.date && !toDoObj.nodate && Taro.requestSubscribeMessage({
       tmplIds: ['i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0'],
       success: (mes_res) => { console.log(mes_res) },
       fail: () => { },

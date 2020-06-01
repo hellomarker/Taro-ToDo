@@ -14,7 +14,7 @@ exports.main = async (event, context) => {
       })
       .get().then(res => {
         res.data && res.data.forEach(element => {
-          if (dateConvert(element.date, 'YYYY年MM月DD日 HH:mm') == dateConvert(Date.now(), 'YYYY年MM月DD日 HH:mm')) {
+          if (-1000 * 60 < element.date - Date.now() && element.date - Date.now() < 1000 * 60) {
             cloud.openapi.subscribeMessage.send({
               touser: element._openid,
               page: 'index',
