@@ -1,5 +1,5 @@
 {
-  "name": "login",
+  "name": "send",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,5 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "wx-server-sdk": "latest"
+  },
+  "permissions": {
+    "openapi": [
+      "subscribeMessage.send"
+    ]
   }
 }

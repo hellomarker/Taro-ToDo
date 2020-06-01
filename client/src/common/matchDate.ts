@@ -1,16 +1,16 @@
 // 为什么不能用(?<=)呀 真***
 // const reg = /([前昨今明后][天日早中晚])?([凌早中晚][晨午上])?[\d]((?<=0|1)[\d]|(?<=2)[0-4])?[点时:-]([\d]((?<=0|1)[\d]|(?<=2)[0-4])?[分])?/;
-const reg = /([前昨今明后][天日早晚])?([凌早上中下晚][晨午上])?([1一十](\d|[一二三四五六七八九])?|[2二两]([0-4]|十[一二三四]?)?|[3-9三四五六七八九])[点时:-]([二三四五](十[一二三四五六七八九]?)?|[12345一二两三四五十](\d|[一二三四五六七八九])?|[6-9六七八九])?[分]?/;
+const reg = /([前昨今明后][天日早晚])?([凌早上中下晚][晨午上])?([1一十](\d|[一二三四五六七八九])?|[2二两]([0-4]|十[一二三四]?)?|[3-9三四五六七八九])[点时:-]([二三四五](十[一二三四五六七八九]?)?|[12345一二两三四五十](\d|[一二三四五六七八九])?|[6-9六七八九半])?[分]?/;
 
 export function matchDate(str: string) {
   let result = reg.exec(str);
   if (result) str = result[0];
-  else return false;
+  else return 0;
 
   let datetime;
-  return str.replace(reg, (match, p1, p2, p3, p4, p5, p6) => {
+  return parseInt(str.replace(reg, (match, p1, p2, p3, p4, p5, p6) => {
     // 确认哪年哪月
-    datetime = new Date(dateConvert(Date.now(), 'yyyy-MM-DD 00:00')).getTime()
+    datetime = new Date(dateConvert(Date.now(), 'yyyy/MM/DD 00:00')).getTime()
     // 确认哪日
     if (p1)
       switch (p1.substr(0, 1)) {
@@ -41,6 +41,7 @@ export function matchDate(str: string) {
       七: '7',
       八: '8',
       九: '9',
+      半: '30'
     }
     if (p3) {
       if (/\d+/.test(p3)) {
@@ -73,8 +74,8 @@ export function matchDate(str: string) {
       if (/\d+/.test(p6)) {
         minute = /\d+/.exec(p6)
         if (minute) minute = minute[0]
-      } else if (/[一二两三四五六七八九十]+/.test(p6)) {
-        minute = /[一二两三四五六七八九十]+/.exec(p6)
+      } else if (/([一二两三四五六七八九十]+|半)/.test(p6)) {
+        minute = /([一二两三四五六七八九十]+|半)/.exec(p6)
         if (minute) minute = minute[0]
 
         if (minute.length == 1) {
@@ -92,16 +93,16 @@ export function matchDate(str: string) {
     }
 
 
-    return dateConvert(datetime, 'YYYY-MM-DD HH:mm');
-  });
+    return datetime;
+  }));
 }
 
 
 export const dateConvert = (time, format = "YYYY-MM-DD HH:mm:ss") => {
-  const date = new Date(time);
   // 这里是为了解决 IOS/Safari 中new Date()的兼容问题 
   if (typeof time == "string" && /(\d{2,4})-(\d{1,2})-(\d{1,2})/.test(time))
     time = time.replace(/(\d{2,4})-(\d{1,2})-(\d{1,2})/, '$1/$2/$3')
+  const date = new Date(time);
 
   const o = {
     "M+": date.getMonth() + 1,               //月份   

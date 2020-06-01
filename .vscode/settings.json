@@ -1,6 +1,5 @@
 {
   // 配置默认终端为 git-bash
-  "terminal.integrated.shell.windows": "D:\\Git\\bin\\bash.exe",
   "minapp-vscode.disableAutoConfig": true,
   // 拆分json编辑器
   "workbench.settings.useSplitJSON": true,
@@ -25,10 +24,7 @@
   "eslint.enable": true,
   "eslint.run": "onType",
   "eslint.options": {
-    "extensions": [
-      ".js",
-      ".vue"
-    ]
+    "extensions": [".js", ".vue"]
   },
   //  #让prettier使用eslint的代码格式进行校验
   "prettier.eslintIntegration": true,

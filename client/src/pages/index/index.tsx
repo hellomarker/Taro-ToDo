@@ -3,7 +3,6 @@ import { View, Text, Input, Radio } from "@tarojs/components";
 import "./index.scss";
 
 import { matchDate, dateConvert } from "../../common/matchDate";
-import Login from '../../components/login/index.weapp'
 
 /**
  * 触摸立刻获取的y轴高度，用于对比
@@ -18,22 +17,32 @@ export default class Index extends Component<any, any> {
       todoList: [],
       toDoObj: { inputValue: "" },
       touchY: -200,
-      isShwoAddBox: false
+      isShwoAddBox: false,
+      openid: '',
     };
   }
   componentWillMount() {
-    Taro.getStorage({
-      key: "todoList",
-      success: res => {
-        this.setState({
-          todoList: res && res.data
-        });
-      }
-    });
     setInterval(() => {
       this.setState({});
     }, 1000 * 60);
-
+    // 获取openid
+    Taro.cloud
+      .callFunction({ name: "login" })
+      .then(res => {
+        this.setState({
+          openid: res.result && res.result['OPENID']
+        }, () => {
+          Taro.cloud.database().collection('todos')
+            .where({
+              _openid: this.state.openid,
+            })
+            .get().then(res => {
+              this.setState({
+                todoList: res.data
+              });
+            })
+        })
+      })
   }
 
   componentDidMount() { }
@@ -97,10 +106,6 @@ export default class Index extends Component<any, any> {
     this.setState({
       todoList: newList
     });
-    Taro.setStorage({
-      key: "todoList",
-      data: newList
-    });
   }
   /**
    * 渲染TODO列表
@@ -117,7 +122,7 @@ export default class Index extends Component<any, any> {
               className={`list-item ${e.done ? "done" : ""}`}
             >
               {/* 文本 */}
-              <Text className='list-item-text' onClick={() => this.onDone(e.yindex)}>{e.content}</Text>
+              <Text className='list-item-text' onClick={() => this.onDone(e.yindex)}>{e.inputValue}</Text>
               {/* ckeckbox */}
               <View className={`list-item-icon ${e.done ? 'check' : ''}`}>
                 <Text className='icondui'></Text>
@@ -146,13 +151,12 @@ export default class Index extends Component<any, any> {
   }
 
   onInput(e) {
-    if (e.detail.value == '一点') {
-      let a = matchDate(e.detail.value.trim())
-    }
     this.setState({
       toDoObj: {
         inputValue: e.detail.value.trim(),
-        date: matchDate(e.detail.value.trim())
+        date: matchDate(e.detail.value.trim()),
+        nodate: false,
+        done: false,
       }
     });
   }
@@ -181,36 +185,23 @@ export default class Index extends Component<any, any> {
     if (toDoObj.inputValue.length == 0) return;
 
     // 消息订阅申请
-    Taro.getSetting({
-      withSubscriptions: true,
-      success: (set_res) => {
-        if (!set_res.subscriptionsSetting.mainSwitch)
-          Taro.requestSubscribeMessage({
-            tmplIds: ['i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0'],
-            success: (mes_res) => { console.log(mes_res) },
-            fail: () => { },
-            complete: () => { },
-          })
-      },
+    Taro.requestSubscribeMessage({
+      tmplIds: ['i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0'],
+      success: (mes_res) => { console.log(mes_res) },
+      fail: () => { },
+      complete: (res) => { console.log(res) },
     })
-    // 发送消息
-    !toDoObj.nodate && Taro.cloud
-      .callFunction({
-        name: "sendMessage",
-        data: {
-          date: toDoObj.date,
-          content: toDoObj.inputValue
-        }
-      })
-      .then(res => {
-        console.log(res)
-      })
+
+    Taro.cloud.database().collection('todos')
+      .add({
+        data: { lastModified: new Date(), ...toDoObj, yindex: todoList.length ? todoList[todoList.length - 1].yindex + 1 : 0, },
+      }).then(res => console.log(res))
 
     const newList = [
       ...todoList,
       {
         yindex: todoList.length ? todoList[todoList.length - 1].yindex + 1 : 0,
-        content: toDoObj.inputValue,
+        inputValue: toDoObj.inputValue,
         date: !toDoObj.nodate && toDoObj.date
       }
     ];
@@ -222,11 +213,6 @@ export default class Index extends Component<any, any> {
       },
       isShwoAddBox: false
     });
-    Taro.setStorage({
-      key: "todoList",
-      data: newList
-    });
-
   }
   checkDate() {
     const { toDoObj } = this.state;
@@ -251,15 +237,11 @@ export default class Index extends Component<any, any> {
                 className={`date ${toDoObj.nodate ? "" : "active"}`}
                 onClick={this.checkDate}
               >
-                {dateConvert(toDoObj.date, 'YYYY年MM月DD日 HH时mm分')}
+                {dateConvert(toDoObj.date, 'YYYY年MM月DD日 HH:mm')}
               </Text>
             ) : <Text></Text>}
             {toDoObj.date && !toDoObj.nodate ? <Text className="icon iconalarm"></Text> : <Text className="icon iconadd-alarm"></Text>}
           </View>
-          {/* <View className="list-box-content">
-            <Text></Text>F
-            <Text className="iconshizhong"></Text>
-          </View> */}
         </View>
         <View className="bottom">
           <Text className="icondui" onClick={this.inputSubmit}></Text>
@@ -308,7 +290,6 @@ export default class Index extends Component<any, any> {
         {this.renderTODO()}
         {this.renderAddTODO()}
         {/* {this.renderSetting()} */}
-        <Login></Login>
       </View>
     );
   }
