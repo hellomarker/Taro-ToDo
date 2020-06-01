@@ -25,14 +25,6 @@ export default class Index extends Component<any, any> {
     setInterval(() => {
       this.setState({});
     }, 1000 * 60);
-    // 获取openid
-    Taro.cloud
-      .callFunction({ name: "login" })
-      .then(res => {
-        this.setState({
-          openid: res.result && res.result['OPENID']
-        }, () => this.getToDoList())
-      })
 
     // Taro.vibrateShort({
     //   success: () => {
@@ -65,12 +57,17 @@ export default class Index extends Component<any, any> {
   componentWillUnmount() { }
 
   componentDidShow() {
+    // 获取openid
+    Taro.cloud
+      .callFunction({ name: "login" })
+      .then(res => {
+        this.setState({
+          openid: res.result && res.result['OPENID']
+        }, () => this.getToDoList())
+      })
     Taro.onAccelerometerChange((e) => {
       if (this.state.isShwoAddBox) return
-      console.log('x', e.x)
-      console.log('y', e.y)
-      console.log('z', e.z)
-      if (e.x > 1 || e.y > 1 || e.z > 1) {
+      if (e.x > .8 || e.y > .8 || e.z > .8) {
         Taro.showToast({
           title: '摇一摇成功',
           icon: 'success',
@@ -228,15 +225,12 @@ export default class Index extends Component<any, any> {
     // 消息订阅申请
     toDoObj.date && !toDoObj.nodate && Taro.requestSubscribeMessage({
       tmplIds: ['i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0'],
-      success: (mes_res) => { console.log(mes_res) },
-      fail: () => { },
-      complete: (res) => { console.log(res) },
     })
 
     Taro.cloud.database().collection('todos')
       .add({
         data: { lastModified: new Date(), ...toDoObj, yindex: todoList.length ? todoList[todoList.length - 1].yindex + 1 : 0, },
-      }).then(res => console.log(res))
+      })
 
     const newList = [
       ...todoList,

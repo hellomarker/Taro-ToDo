@@ -7,20 +7,24 @@ cloud.init({
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   try {
-    cloud.database().collection('todos')
+    console.log('触发器触发时间:', dateConvert(Date.now()))
+    const db = cloud.database()
+    const _ = db.command
+    db.collection('todos')
       .where({
         done: false,
-        nodate: false
+        nodate: false,
+        date: _.gte(Date.now() - 5 * 60 * 1000)
       })
       .get().then(res => {
-        res.data && res.data.forEach(element => {
-          if (-1000 * 60 < element.date - Date.now() && element.date - Date.now() < 1000 * 60) {
+        if (res.data) {
+          res.data.forEach(element => {
             cloud.openapi.subscribeMessage.send({
               touser: element._openid,
               page: 'index',
               data: {
                 time2: {
-                  value: dateConvert(element.date + 1000 * 60 * 60 * 8, 'YYYY年MM月DD日 HH:mm')
+                  value: dateConvert(element.date, 'YYYY年MM月DD日 HH:mm')
                 },
                 thing3: {
                   value: element.inputValue
@@ -29,9 +33,9 @@ exports.main = async (event, context) => {
               templateId: 'i0_a7IsXWe6ZRHZR9ro0ach2dQldcMgi-hLFfVmQWu0',
               // miniprogramState: 'developer'
             })
-          }
-          cloud.database().collection('todos').doc(element._id).update({ data: { nodate: true } })
-        });
+            db.collection('todos').doc(element._id).update({ data: { nodate: true } })
+          });
+        }
       })
   } catch (err) {
     return err
